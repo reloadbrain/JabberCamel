@@ -8,8 +8,8 @@
      <provider>
          org.apache.openjpa.persistence.PersistenceProviderImpl
     </provider> 
-     <class>com.bencompany.jabbercamel.camel.JabberMessage</class>
-     <class>com.bencompany.jabbercamel.camel.User</class>
+     <class>com.bencompany.jabbercamel.model.JabberMessage</class>
+     <class>com.bencompany.jabbercamel.model.User</class>
      <properties>
        <property name="openjpa.ConnectionURL"   value="${db.connection}"/>
        <property name="openjpa.ConnectionDriverName" value="${db.driver}"/>

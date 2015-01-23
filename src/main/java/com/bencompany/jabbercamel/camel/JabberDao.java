@@ -5,12 +5,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.bencompany.jabbercamel.model.JabberMessage;
+import com.bencompany.jabbercamel.model.User;
 
 /*
  * Database access to persist and retrieve Jabber messages and users
@@ -20,8 +21,8 @@ public class JabberDao {
 	
 	@PersistenceUnit
 	EntityManagerFactory emf;
-	
 	EntityManager em;
+	
 	public JabberDao() { }
 	
 	@PostConstruct

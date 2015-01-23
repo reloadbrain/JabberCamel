@@ -1,4 +1,4 @@
-package com.bencompany.jabbercamel.camel;
+package com.bencompany.jabbercamel.model;
 
 import javax.persistence.*;
 

@@ -2,13 +2,12 @@ package com.bencompany.jabbercamel;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.bencompany.jabbercamel.camel.JabberMessage;
+import com.bencompany.jabbercamel.model.JabberMessage;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= "/test-context.xml")

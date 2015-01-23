@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bencompany.jabbercamel.model.JabberMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
