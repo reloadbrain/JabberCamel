@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+ 
+   <persistence-unit name="my-pu">
+     <description>My Persistence Unit</description>
+     <provider>
+         org.apache.openjpa.persistence.PersistenceProviderImpl
+    </provider> 
+     <class>com.bencompany.jabbercamel.camel.JabberMessage</class>
+     <class>com.bencompany.jabbercamel.camel.User</class>
+     <properties>
+       <property name="openjpa.ConnectionURL"   value="${db.connection}"/>
+       <property name="openjpa.ConnectionDriverName" value="${db.driver}"/>
+       <property name="javax.persistence.jdbc.user" value="${db.user}"/>
+       <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/> <!-- Allows OpenJPA to enhance class on runtime -->
+       <property name="javax.persistence.jdbc.password" value="${db.pass}"/>
+       <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+   		<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO"/>
+     </properties>
+   </persistence-unit>
+   
+ 
+</persistence>

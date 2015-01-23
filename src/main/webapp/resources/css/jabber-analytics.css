@@ -1,0 +1,14 @@
+@CHARSET "ISO-8859-1";
+
+.message {
+	word-wrap: break-word;
+}
+
+span#username {
+	font-weight: bold;	
+}
+
+span#timestamp {
+	font-size: 0.6em;
+	color: #aeaeae;
+}
