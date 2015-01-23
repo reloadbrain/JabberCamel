@@ -50,39 +50,6 @@ public class HomeController {
 		return "home";
 	}
 
-	/**
-	 * Returns the last 20 messages as JSON
-	 */
-	@RequestMapping(value = "/getMessages", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public String getMessages() throws JsonGenerationException,
-			JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(dao.getLast20Messages());
-	}
-
-	/**
-	 * Returns list of active users as JSON
-	 */
-	@RequestMapping(value = "/getUsers", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public String getActiveUsers() throws JsonGenerationException,
-			JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		List<User> users = dao.getActiveUsers();
-		return mapper.writeValueAsString(users);
-	}
-
-	/**
-	 * Test endpoint to check that topic is sending messages properly
-	 */
-	@RequestMapping(value="/greetings", method=RequestMethod.GET)
-	public String handle() {
-		Locale locale = new Locale("en");
-		this.messagingTemplate.convertAndSend("/topic/jabbermessages","["+getTimestamp(locale)+"]:Message Recieved");
-		return "Sent";
-	}
-
 	public String getTimestamp(Locale locale) {
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,

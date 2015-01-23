@@ -17,16 +17,16 @@
 	<h1>Jabber Analytics</h1>
 	</div>
 	<div class="row">
-		<div id="currentTime" class="small-3 large-4 column">
-		<h4>Current Time</h4>
-			<P>The time on the server is ${serverTime}.</P>
+		<div class="small-3 large-4 column">
+		<h4>Popular Links</h4>
+			<div id="popularlinks"></div>
 		</div>
-		<div id="latestJabberLog" class="small-6 large-4 column">
+		<div class="small-6 large-4 column">
 		<h4>Latest Messages</h4>
 			<div id="latestmessages">
 			</div>
 		</div>
-		<div id="mosttalked" class="small-3 large-4 column">
+		<div class="small-3 large-4 column">
 			<h4>Most Active</h4>
 			<div id="mostactive">
 			</div>

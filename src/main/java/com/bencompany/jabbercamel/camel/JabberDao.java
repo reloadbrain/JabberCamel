@@ -5,12 +5,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bencompany.jabbercamel.model.JabberMessage;
+import com.bencompany.jabbercamel.model.Link;
 import com.bencompany.jabbercamel.model.User;
 
 /*
@@ -19,20 +22,23 @@ import com.bencompany.jabbercamel.model.User;
 @Repository
 public class JabberDao {
 	
-	@PersistenceUnit
-	EntityManagerFactory emf;
+	/*
+	 * Use a PersistenceContext to inject EntityManagers. Use a PersistenceUnit to inject an EntityManagerFactory
+	 * if you want to manually control your EntityManagers
+	 */
+	@PersistenceContext
 	EntityManager em;
 	
 	public JabberDao() { }
 	
 	@PostConstruct
 	public void createEntityManager() {
-		em = emf.createEntityManager();
 	}
 	/*
 	 * Retrieves last 20 messages from DB as JabberMessage
 	 */
 	@SuppressWarnings("unchecked")
+	@Transactional
 	public List<JabberMessage> getLast20Messages() {
 		Query query = em.createNativeQuery("SELECT * FROM Message ORDER BY id DESC LIMIT 20", JabberMessage.class);
 		List<JabberMessage> results = query.getResultList();
@@ -49,23 +55,43 @@ public class JabberDao {
 		return results; 
 	}
 	
+	@Transactional
+	public Link getLink(String url) {
+		try {
+			Query query = em.createNativeQuery("SELECT * FROM Link WHERE url = ?", Link.class);
+			query.setParameter(1, url);
+			Link link = (Link) query.getSingleResult();
+			return link;
+		} catch (Exception e){
+			return null;
+		}
+		
+	}
+	@Transactional
+	public List<Link> getPopularLinks() {
+		try {
+			Query query = em.createNativeQuery("SELECT * FROM Link ORDER BY count DESC", Link.class);
+			List<Link> links = query.getResultList();
+			return links;
+		} catch (Exception e){
+			return null;
+		}
+	}
 	/*
 	 * Saves JabberMessage to database, and persists the updateduser.
 	 */
+	@Transactional
 	public void putMessage(JabberMessage msg) throws Exception {
 		User updatedUser = updateUser(msg.getUsername());
-
-		em.getTransaction().begin();
 		em.persist(updatedUser);
 		em.persist(msg);
-		em.getTransaction().commit();
 	}
 	
 	/*
 	 * Updates the Message Count of a User. Create user if it doesn't exist, returns user to persist
 	 */
+	@Transactional
 	private User updateUser(String user) {
-
 		Query getUserQuery = em.createNativeQuery("SELECT * FROM User WHERE userName = ?1", User.class);
 		getUserQuery.setParameter(1, user);
 		
@@ -87,6 +113,11 @@ public class JabberDao {
 		}
 		return updatedUser;
 		
+	}
+
+	@Transactional
+	public void putLink(Link existingLink) {
+		em.persist(existingLink);
 	}
 	
 }

@@ -71,11 +71,23 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-camel</artifactId>
 			<version>5.10.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
 			<version>2.14.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -93,6 +105,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
 			<version>${org.springframework-version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -104,11 +122,20 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
@@ -127,9 +154,9 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>3.1</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework-version}</version>
 		</dependency>
 
 		<!-- AspectJ -->
@@ -229,7 +256,7 @@
 	
 	<build>
 	<filters>
-      <filter>src/main/resources/bencompany.properties</filter>
+      <filter>src/main/resources/localhost.properties</filter> <!--  filter for Persistence.xml -->
     </filters>
 		<pluginManagement>
 			<plugins>

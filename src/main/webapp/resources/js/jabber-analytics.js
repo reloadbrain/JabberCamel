@@ -29,6 +29,17 @@ function processLatestMessages(data) {
 	});
 }
 
+function processPopularLinks(data) {
+	$(data).each(function(idx) {
+	var html = '<div id="link">' +
+	'<span id="url">' + stripHTML(data[idx].url) + '</span>' +
+	'<span id="op">OP: ' + data[idx].op + '</span>    ' +
+	'<span id="latest">Latest: ' + data[idx].lastPostedBy + '</span><br/>' +
+	'<span id="count">Linked: ' + data[idx].count + ' Times</span></div><br />'
+	$("#popularlinks").prepend(html);
+	});
+}
+
 function stripHTML(msg) {
 	msg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	return msg;
@@ -82,6 +93,7 @@ $(document).ready(function() {
 	
 	// AJAX Load what's already there
 	$.ajax("getUsers").done(processActiveUsers);
+	$.ajax("getLinks").done(processPopularLinks);
 	$.ajax("getMessages").done(processLatestMessages);
 	
 	// Socket load all the new shit!

@@ -16,17 +16,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Component
 public class JabberProcessor implements Processor {
+	
 	Logger logger = Logger.getLogger("JabberProcessor");
 	
-	
 	@Autowired TopicHandler topic; // Handles putting messages onto the WebSockets Topic
+	@Autowired LinkHandler linkHandler; // Handles URL's pasted in messages
 	@Autowired ObjectMapper om; // Maps objects to JSON
 	@Autowired JabberDao dao; // Database access
 	
 	@Override
 	public void process(Exchange arg0) throws Exception {
 		logger.info("Processing!");
+		
 		JabberMessage msg = convertToMessage(arg0);
+		if (msg.getMessage().contains("http")) {
+			linkHandler.putLink(msg);
+		}
 		dao.putMessage(msg);
 		topic.pushToTopic(msg);
 		arg0.getOut().setBody(om.writeValueAsString(msg));

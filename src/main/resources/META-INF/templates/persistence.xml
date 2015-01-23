@@ -10,12 +10,14 @@
     </provider> 
      <class>com.bencompany.jabbercamel.model.JabberMessage</class>
      <class>com.bencompany.jabbercamel.model.User</class>
+     <class>com.bencompany.jabbercamel.model.Link</class>
      <properties>
        <property name="openjpa.ConnectionURL"   value="${db.connection}"/>
        <property name="openjpa.ConnectionDriverName" value="${db.driver}"/>
        <property name="javax.persistence.jdbc.user" value="${db.user}"/>
        <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/> <!-- Allows OpenJPA to enhance class on runtime -->
        <property name="javax.persistence.jdbc.password" value="${db.pass}"/>
+       <property name="openjpa.Multithreaded" value="true" />
        <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
    		<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO"/>
      </properties>

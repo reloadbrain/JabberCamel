@@ -12,3 +12,9 @@ span#timestamp {
 	font-size: 0.6em;
 	color: #aeaeae;
 }
+
+/* Popular Links */
+span#op { font-size:10px; color: #aeaeae;}
+span#latest { font-size:10px; color: #aeaeae;}
+span#count { font-size:10px; color: #aeaeae;}
+span#url { display: block; margin-bottom: -8px; }
