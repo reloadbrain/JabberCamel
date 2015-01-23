@@ -21,6 +21,7 @@ Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
 
 ## TODO
 - [ ] Emotion Tracking
-- [ ] Popular Links
-- [ ] Topic History (Not sure if this is possible)
-- [ ] Fix Maven Resources Plugin
+- [*] Popular Links
+- [ ] Graphs and Graphs and Graphs and Graphs and Graphs and Graphs 
+- [ ] Fix Maven Resources Plugin (Integrate into build process)
+- [ ] Bot Commands
