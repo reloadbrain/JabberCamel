@@ -16,3 +16,8 @@ In ``` src/main/resources/META-INF/templates ``` you will find template.properti
 Create your database prior to running, but the tables should create automatically thanks to the wizardry of JPA.
 
 Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
+
+## TODO
+- [ ] Emotion Tracking
+- [ ] Popular Links
+- [ ] Topic History (Not sure if this is possible)
