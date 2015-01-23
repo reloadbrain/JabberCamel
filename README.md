@@ -21,3 +21,4 @@ Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
 - [ ] Emotion Tracking
 - [ ] Popular Links
 - [ ] Topic History (Not sure if this is possible)
+- [ ] Fix Maven Resources Plugin
