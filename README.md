@@ -20,8 +20,9 @@ Create your database prior to running, but the tables should create automaticall
 Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
 
 ## TODO
+- [x] Popular Links
+- [ ] Last Seen
 - [ ] Emotion Tracking
-- [*] Popular Links
 - [ ] Graphs and Graphs and Graphs and Graphs and Graphs and Graphs 
 - [ ] Fix Maven Resources Plugin (Integrate into build process)
 - [ ] Bot Commands
