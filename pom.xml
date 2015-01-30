@@ -253,7 +253,7 @@
 	
 	<build>
 	<filters>
-      <filter>src/main/resources/localhost.properties</filter> <!--  filter for Persistence.xml -->
+      <filter>src/main/resources/localhost.properties</filter> <!--  filter for properties -->
     </filters>
 		<pluginManagement>
 			<plugins>
@@ -290,7 +290,7 @@
 				    <version>2.6</version>
 				    <executions>
 				        <execution>
-				            <id>fill-properties</id>
+				            <id>fill-properties1</id>
 				            <phase>prepare-package</phase>
 				            <goals>
 				                <goal>copy-resources</goal>
@@ -302,6 +302,23 @@
 								        <directory>src/main/resources/META-INF/templates</directory>
 								        <filtering>true</filtering>
 								        <include>persistence.xml</include>
+								      </resource>
+				                </resources>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>fill-properties2</id>
+				            <phase>prepare-package</phase>
+				            <goals>
+				                <goal>copy-resources</goal>
+				            </goals>
+				            <configuration>
+				                <outputDirectory>src/main/webapp/resources/js</outputDirectory>
+				                <resources>
+				                    <resource>
+								        <directory>src/main/resources/META-INF/templates</directory>
+								        <filtering>true</filtering>
+								        <include>jabber-analytics.js</include>
 								      </resource>
 				                </resources>
 				            </configuration>

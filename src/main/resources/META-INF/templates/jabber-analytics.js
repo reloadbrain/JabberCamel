@@ -98,7 +98,7 @@ $(document).ready(function() {
 	
 	// Socket load all the new shit!
 	// http://localhost:8080/jabbercamel/jabbermessages
-	socket = new SockJS('http://bencompany.net:8080gag/jabbercamel/jabbermessages');
+	socket = new SockJS('${topic.url}');
 	client = Stomp.over(socket);
 	client.connect("user", "pass", connectCallback, errorCallback());
 	
