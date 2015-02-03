@@ -14,16 +14,8 @@
 	<!-- Config -->
 	<context:component-scan base-package="com.bencompany.jabbercamel" />
 	<annotation-driven />
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	<!-- EntityManager for JPA -->
-	<beans:bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-		<beans:property name="persistenceUnitName" value="my-pu" />
-	</beans:bean>
 	
-	<beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-    	<beans:property name="entityManagerFactory" ref="entityManagerFactory" />
- 	</beans:bean>
+	
 
 	<!-- My Beans -->
 	<beans:bean id="jabberProcessorBean"
@@ -47,7 +39,7 @@
 			<c:to uri="{{xmpp.connection}}" />
 		</c:route>
 
-		<!-- Recieves messages from XMPP -->
+		<!-- Receives messages from XMPP -->
 		<c:route id="recieveMessage">
 			<c:from uri="properties:{{xmpp.connection}}" />
 			<c:log message="Recieved" loggingLevel="INFO" />

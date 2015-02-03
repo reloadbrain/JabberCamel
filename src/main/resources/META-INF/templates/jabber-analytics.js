@@ -8,9 +8,9 @@ var socket; // socket itself
 function processActiveUsers(data) {
 	$(data).each(function(idx) {
 		//console.log(data[idx].userName + ":" + data[idx].messageCount);
-		var newString = '<div id="userMsgCount-' + data[idx].userName + '"class="user"><p><span id="username">'+data[idx].userName+'</span>'+
+		var newString = '<div id="userMsgCount-' + data[idx].userName + '"class="user"><span id="username">'+data[idx].userName+'</span>'+
 		': <span id="messageCount">'+data[idx].messageCount+
-		'</span></p></div>'
+		'</span></div>'
 		$("#mostactive").append(newString);
 	});
 }
@@ -22,10 +22,11 @@ function processActiveUsers(data) {
 function processLatestMessages(data) {
 	$(data).each(function(idx) {
 		//console.log(data[idx].timestamp + "| " + data[idx].username + data[idx].message);
-		var newString = '<div class="message'+data[idx].id+'"><p><span id="username">'+data[idx].username+'</span>'+
+		var newString = '<div class="message'+data[idx].id+'"><span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="'+data[idx].timestamp+'"id="username">'+data[idx].username+'</span>'+
 		':'+stripHTML(data[idx].message)+
-		'<br/><span id="timestamp">'+data[idx].timestamp+'</span></p></div>'
+		'</div>'
 		$("#latestmessages").append(newString);
+		$(document).foundation('tooltip', 'reflow');
 	});
 }
 
@@ -60,9 +61,9 @@ function processNewMessage(msg) {
 	}
 	
 	// prepend message to latest msgs
-	var newMessage = '<div class="message'+msgObj.id+'"><p><span id="username">'+msgObj.username+'</span>'+
+	var newMessage = '<div class="message'+msgObj.id+'"><span id="username">'+msgObj.username+'</span>'+
 	':'+stripHTML(msgObj.message)+
-	'<br/><span id="timestamp">'+msgObj.timestamp+'</span></p></div>'
+	'<br/><span id="timestamp">'+msgObj.timestamp+'</span></div>'
 	$("#latestmessages").prepend(newMessage);
 }
 

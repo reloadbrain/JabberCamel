@@ -17,18 +17,19 @@
 	<h1>Jabber Analytics</h1>
 	</div>
 	<div class="row">
-		<div class="small-3 large-4 column">
+		<div class="small-3 large-3 column">
 		<h4>Popular Links</h4>
 			<div id="popularlinks"></div>
 		</div>
-		<div class="small-6 large-4 column">
-		<h4>Latest Messages</h4>
-			<div id="latestmessages">
-			</div>
-		</div>
-		<div class="small-3 large-4 column">
+		<div class="small-6 large-3 column">
+		
 			<h4>Most Active</h4>
 			<div id="mostactive">
+			</div>
+		</div>
+		<div class="small-3 large-6 column">
+		<h4>Latest Messages</h4>
+			<div id="latestmessages">
 			</div>
 		</div>
 	</div>
@@ -36,6 +37,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
 	<script src="resources/js/vendor/modernizr.js"></script>
 	<script src="resources/js/foundation.min.js"></script>
+	<script src="resources/js/foundation/foundation.tooltip.js"></script>
 	<script src="resources/js/stomp.js"></script>
 	<script src="resources/js/jabber-analytics.js"></script>
 	<script>
