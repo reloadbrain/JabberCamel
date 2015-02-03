@@ -14,6 +14,7 @@
 	<!-- Config -->
 	<context:component-scan base-package="com.bencompany.jabbercamel" />
 	<annotation-driven />
+	<context:property-placeholder />
 	
 	
 
@@ -21,6 +22,8 @@
 	<beans:bean id="jabberProcessorBean"
 		class="com.bencompany.jabbercamel.camel.JabberProcessor" />
 		
+	<beans:bean id="ChatHandlerBean"
+		class="com.bencompany.jabbercamel.camel.ChatHandler" />	
 	<beans:bean id="objectMapper" 
 		class="com.fasterxml.jackson.databind.ObjectMapper" />
 
@@ -34,7 +37,7 @@
 
 		<!-- Sends messages from 'input' folder to current conference. -->
 		<c:route id="sendMessage">
-			<c:from uri="file://input" />
+			<c:from uri="direct:chatResponse" />
 			<c:log message="Sending Message: ${body}" />
 			<c:to uri="{{xmpp.connection}}" />
 		</c:route>
