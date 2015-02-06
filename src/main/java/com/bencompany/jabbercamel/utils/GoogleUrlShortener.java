@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -40,8 +39,7 @@ public final class GoogleUrlShortener {
                 sb.append(line + '\n');
             }
             String json = sb.toString();
-            return json;
-            //return json.substring(json.indexOf("http"), json.indexOf("\"", json.indexOf("http")));
+            return json.substring(json.indexOf("http"), json.indexOf("\"", json.indexOf("http")));
         } catch (MalformedURLException e) {
         	return e.getMessage();
         } catch (IOException e) {

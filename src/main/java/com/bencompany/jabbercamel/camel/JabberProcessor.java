@@ -42,14 +42,16 @@ public class JabberProcessor implements Processor {
 			linkHandler.putLink(msg);
 		}
 		
-		if (msg.getMessage().contains(botname)) {
+		// command, don't save the message!
+		if (msg.getMessage().contains(botname) || msg.getUsername().contains(botname)) {
 			logger.info("Hey, that's my name!");
 			chatHandler.handleMessage(msg);
+		} else {
+			// standard message saving
+			dao.putMessage(msg);
+			topic.pushToTopic(msg);
 		}
 		
-		// standard message saving
-		dao.putMessage(msg);
-		topic.pushToTopic(msg);
 		arg0.getOut().setBody(om.writeValueAsString(msg));
 		
 	}

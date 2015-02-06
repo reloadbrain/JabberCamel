@@ -8,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bencompany.jabbercamel.model.JabberMessage;
-import com.bencompany.jabbercamel.model.Link;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= "/test-context.xml")
