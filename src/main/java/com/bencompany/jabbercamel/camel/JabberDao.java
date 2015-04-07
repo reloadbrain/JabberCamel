@@ -76,7 +76,7 @@ public class JabberDao {
 		}
 	}
 	/*
-	 * Saves JabberMessage to database, and persists the updateduser.
+	 * Saves JabberMessage to database, and persists the updated user.
 	 */
 	@Transactional
 	public void putMessage(JabberMessage msg) throws Exception {
@@ -117,5 +117,6 @@ public class JabberDao {
 	public void putLink(Link existingLink) {
 		em.persist(existingLink);
 	}
+	
 	
 }

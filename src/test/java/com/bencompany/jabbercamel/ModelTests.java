@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bencompany.jabbercamel.model.JabberMessage;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= "/test-context.xml")
+@ContextConfiguration(locations= "test-context.xml")
 public class ModelTests {
 	
 	@Test

@@ -3,21 +3,20 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:c="http://camel.apache.org/schema/spring"
+	xmlns:c="http://camel.apache.org/schema/spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
-		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+		">
 
+	<beans:import resource="db-context.xml"/>
 	<!-- Config -->
 	<context:component-scan base-package="com.bencompany.jabbercamel" />
 	<annotation-driven />
 	<context:property-placeholder />
 	
-	
-
 	<!-- My Beans -->
 	<beans:bean id="jabberProcessorBean"
 		class="com.bencompany.jabbercamel.camel.JabberProcessor" />
@@ -41,7 +40,19 @@
 			<c:log message="Sending Message: ${body}" />
 			<c:to uri="{{xmpp.connection}}" />
 		</c:route>
-
+		
+		<c:route id="sendPrivateMessageDebug">
+			<c:from uri="direct:debugPm" />
+			<c:log message="Sending DEBUG Message: ${body}" />
+			<c:to uri="xmpp://benco@jabberzac.org/benco@jabberzac.org?password=bacchus991" />
+		</c:route>
+		
+		<c:route id="sendPrivateMessage">
+			<c:from uri="direct:pm" />
+			<c:log message="Sending Message: ${body} to ${header.recipient}" />
+			<c:log message="URI: xmpp://{{xmpp.user}}@{{xmpp.domain}}/${header.recipient}@{{xmpp.domain}}?password={{xmpp.password}}" />
+			<c:to uri="xmpp://{{xmpp.user}}@{{xmpp.domain}}/${header.recipient}@{{xmpp.domain}}?password={{xmpp.password}}" />
+		</c:route>
 		<!-- Receives messages from XMPP -->
 		<c:route id="recieveMessage">
 			<c:from uri="properties:{{xmpp.connection}}" />

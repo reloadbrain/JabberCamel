@@ -1,5 +1,6 @@
 package com.bencompany.jabbercamel.camel;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +24,41 @@ public class LinkHandler {
 			updateLink(existingLink, msg.getUsername());
 		} else {
 			logger.info("Link doesn't exist, creating:" + msg.getMessage());
+			try {
 			Link link = convertMessageToLink(msg);
 			dao.putLink(link);
+			}
+			catch (Exception e) {
+				logger.error("Could not find link in message. Ignoring");
+			}
 		}
 	}
 	
-	private Link convertMessageToLink(JabberMessage msg) {
+	
+	public Link convertMessageToLink(JabberMessage msg) throws Exception {
 		Link link = new Link();
 		link.setCount(1);
 		link.setOp(msg.getUsername());
-		link.setUrl(msg.getMessage());
+		link.setUrl(stripLink(msg.getMessage()));
 		link.setLastPostedBy(msg.getUsername());
 		return link;
 		
+	}
+	
+	private String stripLink(String message) throws Exception {
+		String[] list = message.split(" ");
+		String url = null;
+		
+		for (int i = 0; i < list.length; i++) {
+			if (list[i].contains("http")) {
+				url = list[i];
+			}
+		}
+		if (url == null) {
+			throw new Exception("URL could not be found");
+		} else {
+			return url;
+		}
 	}
 
 	private void updateLink(Link existingLink, String latestUser) {

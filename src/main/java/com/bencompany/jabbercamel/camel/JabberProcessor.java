@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @PropertySource({ "classpath:localhost.properties" })
 public class JabberProcessor implements Processor {
 	
+	
 	@Value("${bot.name}")
 	public String botname;
 	
@@ -33,11 +34,13 @@ public class JabberProcessor implements Processor {
 	
 	@Override
 	public void process(Exchange arg0) throws Exception {
-		logger.info("Processing!");
+		logger.info("Processing new message");
 		
 		JabberMessage msg = convertToMessage(arg0);
 		
-		// save link
+		// don't do any message processing outside of this!
+		try {
+			// save link
 		if (msg.getMessage().contains("http")) {
 			linkHandler.putLink(msg);
 		}
@@ -48,8 +51,13 @@ public class JabberProcessor implements Processor {
 			chatHandler.handleMessage(msg);
 		} else {
 			// standard message saving
+			chatHandler.message(msg.getUsername(), "works");
 			dao.putMessage(msg);
 			topic.pushToTopic(msg);
+		}
+		} 
+		catch (Exception e) {
+			chatHandler.message("benco", e.getMessage().split("\\r?\\n")[0]);
 		}
 		
 		arg0.getOut().setBody(om.writeValueAsString(msg));

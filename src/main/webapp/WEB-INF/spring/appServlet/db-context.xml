@@ -10,7 +10,7 @@
 	<!-- EntityManager for JPA -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="my-pu-tests" />
+		<property name="persistenceUnitName" value="my-pu" />
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

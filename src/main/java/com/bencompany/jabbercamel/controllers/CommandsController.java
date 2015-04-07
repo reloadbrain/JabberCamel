@@ -71,15 +71,6 @@ public class CommandsController {
 		List<Link> links = dao.getPopularLinks();
 		return mapper.writeValueAsString(links);
 	}
-	/**
-	 * Test endpoint to check that topic is sending messages properly
-	 */
-	@RequestMapping(value="/greetings", method=RequestMethod.GET)
-	public String handle() {
-		Locale locale = new Locale("en");
-		this.messagingTemplate.convertAndSend("/topic/jabbermessages","["+getTimestamp(locale)+"]:Message Recieved");
-		return "Sent";
-	}
 
 	public String getTimestamp(Locale locale) {
 		Date date = new Date();

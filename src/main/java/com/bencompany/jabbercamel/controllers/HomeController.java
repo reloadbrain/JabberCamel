@@ -21,6 +21,7 @@ import com.bencompany.jabbercamel.camel.JabberDao;
 @Controller
 public class HomeController {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	// Allows saving and retrieving from DB

@@ -6,8 +6,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
+import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.properties.PropertiesComponent;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bencompany.jabbercamel.model.JabberMessage;
@@ -21,28 +27,38 @@ import com.rometools.rome.io.XmlReader;
 @Component
 public class ChatHandler {
 
+	Logger logger = Logger.getLogger(ChatHandler.class);
 	@EndpointInject(uri="direct:chatResponse")
 	  ProducerTemplate producer;
+	
+	@EndpointInject(uri="direct:debugPm")
+	  ProducerTemplate debugPm;
+	
+	@EndpointInject(uri="direct:pm")
+	  ProducerTemplate pm;
+	
+	@Autowired
+	PropertiesComponent properties;
+	
+	@Autowired
+	CamelContext ctx;
 	
 	public void handleMessage(JabberMessage msg) {
 	
 		if (msg.getMessage().contains("rss")) {
-			
 			try {
-				getRss();
-			} catch (IllegalArgumentException e) {
+				getRss(msg.getUsername());
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (FeedException e) {
-				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			} 
 		}
 	}
 	
-	public void getRss() throws IllegalArgumentException, FeedException, IOException {
+	/*
+	 * Gets RSS feed of ABC News and PM's user
+	 */
+	public void getRss(String user) throws IllegalArgumentException, FeedException, IOException {
+		logger.info("Getting RSS feed for user:" + user);
 		SyndFeedInput input = new SyndFeedInput();
 		URL feedUrl = new URL("http://www.abc.net.au/news/feed/51120/rss.xml");
 		URLConnection conn = feedUrl.openConnection();
@@ -57,7 +73,17 @@ public class ChatHandler {
 			sb.append(entry.getTitle() + "  ");
 			sb.append(GoogleUrlShortener.shorten(entry.getLink()) + System.getProperty("line.separator"));
 		}
-		producer.sendBody(sb.toString());
+		logger.info("Sending RSS to user:" + user);
+		pm.sendBodyAndHeader(sb.toString(), "recipient", user);
+	}
+	
+	public void say(String message) {
+		producer.sendBody("Uh oh: " + message);
+	}
+
+	public void message(String name, String message) {
+		debugPm.sendBody("msg sent to" + name);
+		pm.sendBodyAndHeader(message, "recipient", name);
 	}
 	 
 }
