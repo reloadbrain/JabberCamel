@@ -17,6 +17,9 @@ public class TopicHandler {
 	@Autowired
 	private MessageSendingOperations<String> messagingTemplate;
 	
+	/*
+	 * Places a message onto the Stomp websocket topic for front-end to read
+	 */
 	public void pushToTopic(JabberMessage msg) throws JsonProcessingException {
 		ObjectMapper om = new ObjectMapper();
 		String msgJson = om.writeValueAsString(msg);

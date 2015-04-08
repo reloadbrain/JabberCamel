@@ -14,7 +14,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 /*
- * Handles configuration of WebSocket
+ * Handles configuration of WebSocket which is used by the front-end for recieving real-time messages.
  */
 @Configuration
 @EnableWebSocketMessageBroker

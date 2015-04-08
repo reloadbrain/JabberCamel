@@ -15,6 +15,17 @@ public class Link {
 	@Basic(optional=false) private String op;
 	@Basic(optional=false) private String lastPostedBy;
 	
+	public Link(String url, long count, String op, String lastPostedBy) {
+		this.url = url;
+		this.count = count;
+		this.op = op;
+		this.lastPostedBy = lastPostedBy;
+	}
+	
+	public Link() {
+		
+	}
+	
 	public String getLastPostedBy() {
 		return lastPostedBy;
 	}

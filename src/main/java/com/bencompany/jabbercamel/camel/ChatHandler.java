@@ -28,24 +28,27 @@ import com.rometools.rome.io.XmlReader;
 public class ChatHandler {
 
 	Logger logger = Logger.getLogger(ChatHandler.class);
+	
+	// responds to MUC
 	@EndpointInject(uri="direct:chatResponse")
 	  ProducerTemplate producer;
 	
+	// sends message to hardcoded developer
 	@EndpointInject(uri="direct:debugPm")
 	  ProducerTemplate debugPm;
 	
+	// sends message to user specified in 'recipient' header
 	@EndpointInject(uri="direct:pm")
 	  ProducerTemplate pm;
 	
 	@Autowired
-	PropertiesComponent properties;
+	GoogleUrlShortener urlShortener;
 	
-	@Autowired
-	CamelContext ctx;
-	
+	/*
+	 * Main handler method for class
+	 */
 	public void handleMessage(JabberMessage msg) {
-	
-		if (msg.getMessage().contains("rss")) {
+		if (msg.getMessage().contains("abc")) {
 			try {
 				getRss(msg.getUsername());
 			} catch (Exception e) {
@@ -59,30 +62,46 @@ public class ChatHandler {
 	 */
 	public void getRss(String user) throws IllegalArgumentException, FeedException, IOException {
 		logger.info("Getting RSS feed for user:" + user);
+		
+		// get feed and convert to ArrayList
 		SyndFeedInput input = new SyndFeedInput();
 		URL feedUrl = new URL("http://www.abc.net.au/news/feed/51120/rss.xml");
 		URLConnection conn = feedUrl.openConnection();
 		XmlReader xml = new XmlReader(conn);
 		SyndFeed feed = input.build(xml);
 		StringBuilder sb = new StringBuilder();
-		sb.append(feed.getAuthor() + System.getProperty("line.separator"));
 		ArrayList<SyndEntry> entries = null;
 		entries = (ArrayList<SyndEntry>) feed.getEntries();
+		
+		// construct string response
+		sb.append(feed.getAuthor() + System.getProperty("line.separator"));
 		for (int i = 0; i < 5; i++ ){ 
 			SyndEntry entry = entries.get(i);
 			sb.append(entry.getTitle() + "  ");
-			sb.append(GoogleUrlShortener.shorten(entry.getLink()) + System.getProperty("line.separator"));
+			sb.append(urlShortener.shorten(entry.getLink()) + System.getProperty("line.separator"));
 		}
 		logger.info("Sending RSS to user:" + user);
 		pm.sendBodyAndHeader(sb.toString(), "recipient", user);
 	}
 	
+	/*
+	 * Send message to MUC
+	 */
 	public void say(String message) {
 		producer.sendBody("Uh oh: " + message);
 	}
 
+	/*
+	 * Send message to developer
+	 */
+	public void debugMessage(String message) {
+		debugPm.sendBody("Something's gone wrong:" + message);
+	}
+	
+	/*
+	 * Send message to user
+	 */
 	public void message(String name, String message) {
-		debugPm.sendBody("msg sent to" + name);
 		pm.sendBodyAndHeader(message, "recipient", name);
 	}
 	 

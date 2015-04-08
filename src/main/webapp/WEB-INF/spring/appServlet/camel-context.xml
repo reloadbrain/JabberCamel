@@ -12,10 +12,11 @@
 		">
 
 	<beans:import resource="db-context.xml"/>
+	
 	<!-- Config -->
 	<context:component-scan base-package="com.bencompany.jabbercamel" />
 	<annotation-driven />
-	<context:property-placeholder />
+	<context:property-placeholder location="classpath:localhost.properties"/>
 	
 	<!-- My Beans -->
 	<beans:bean id="jabberProcessorBean"
@@ -34,31 +35,35 @@
 
 	<c:camelContext>
 
-		<!-- Sends messages from 'input' folder to current conference. -->
+		<!-- Sends message to MUC -->
 		<c:route id="sendMessage">
 			<c:from uri="direct:chatResponse" />
 			<c:log message="Sending Message: ${body}" />
 			<c:to uri="{{xmpp.connection}}" />
 		</c:route>
 		
+		<!-- Private message to developer -->
 		<c:route id="sendPrivateMessageDebug">
 			<c:from uri="direct:debugPm" />
 			<c:log message="Sending DEBUG Message: ${body}" />
-			<c:to uri="xmpp://benco@jabberzac.org/benco@jabberzac.org?password=bacchus991" />
+			<c:to uri="xmpp://{{xmpp.user}}@{{xmpp.domain}}/{{xmpp.dev.user}}@{{xmpp.domain}}?password={{xmpp.password}}" />
 		</c:route>
 		
+		<!-- Private message to user in 'recipient' header field -->
 		<c:route id="sendPrivateMessage">
 			<c:from uri="direct:pm" />
 			<c:log message="Sending Message: ${body} to ${header.recipient}" />
 			<c:log message="URI: xmpp://{{xmpp.user}}@{{xmpp.domain}}/${header.recipient}@{{xmpp.domain}}?password={{xmpp.password}}" />
 			<c:to uri="xmpp://{{xmpp.user}}@{{xmpp.domain}}/${header.recipient}@{{xmpp.domain}}?password={{xmpp.password}}" />
 		</c:route>
-		<!-- Receives messages from XMPP -->
+		
+		<!-- Receives messages from MUC -->
 		<c:route id="recieveMessage">
 			<c:from uri="properties:{{xmpp.connection}}" />
 			<c:log message="Recieved" loggingLevel="INFO" />
 			<c:inOut uri="bean:jabberProcessorBean" />
 		</c:route>
+		
 	</c:camelContext>
 
 </beans:beans>

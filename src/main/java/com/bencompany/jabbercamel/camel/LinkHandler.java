@@ -11,9 +11,9 @@ import com.bencompany.jabbercamel.model.Link;
 
 @Component
 public class LinkHandler {
-
-	@Autowired JabberDao dao; // Database access
 	Logger logger = LoggerFactory.getLogger(LinkHandler.class);
+	
+	@Autowired JabberDao dao; // Database access
 	
 	//TODO: Strip link out of rest of message
 	public void putLink(JabberMessage msg) {
@@ -34,7 +34,9 @@ public class LinkHandler {
 		}
 	}
 	
-	
+	/*
+	 * Converts JabberMessage object to Link object
+	 */
 	public Link convertMessageToLink(JabberMessage msg) throws Exception {
 		Link link = new Link();
 		link.setCount(1);
@@ -45,6 +47,9 @@ public class LinkHandler {
 		
 	}
 	
+	/*
+	 * Strips link from message
+	 */
 	private String stripLink(String message) throws Exception {
 		String[] list = message.split(" ");
 		String url = null;
@@ -61,6 +66,9 @@ public class LinkHandler {
 		}
 	}
 
+	/*
+	 * Increments link count and updates last poster
+	 */
 	private void updateLink(Link existingLink, String latestUser) {
 		long count = existingLink.getCount();
 		existingLink.setCount(++count);

@@ -14,56 +14,64 @@ import com.bencompany.jabbercamel.model.JabberMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
- * Processes messages coming from Camel into a JabberMessage, then saves to database and sends to topic.
+ * Processes messages coming from Camel into a JabberMessage
  */
 @Component
 @PropertySource({ "classpath:localhost.properties" })
 public class JabberProcessor implements Processor {
-	
-	
+
 	@Value("${bot.name}")
 	public String botname;
-	
+
 	Logger logger = Logger.getLogger("JabberProcessor");
-	
-	@Autowired TopicHandler topic; // Handles putting messages onto the WebSockets Topic
-	@Autowired LinkHandler linkHandler; // Handles URL's pasted in messages
-	@Autowired ObjectMapper om; // Maps objects to JSON
-	@Autowired JabberDao dao; // Database access
-	@Autowired ChatHandler chatHandler; // handles chat responses
-	
+
+	@Autowired
+	TopicHandler topic; // Handles putting messages onto the WebSockets Topic
+	@Autowired
+	LinkHandler linkHandler; // Handles URL's pasted in messages
+	@Autowired
+	ObjectMapper om; // Maps objects to JSON
+	@Autowired
+	JabberDao dao; // Database access
+	@Autowired
+	ChatHandler chatHandler; // handles chat responses
+
 	@Override
-	public void process(Exchange arg0) throws Exception {
+	public void process(Exchange camelExchange) throws Exception {
 		logger.info("Processing new message");
-		
-		JabberMessage msg = convertToMessage(arg0);
-		
+
+		JabberMessage msg = convertToMessage(camelExchange);
+
 		// don't do any message processing outside of this!
 		try {
 			// save link
-		if (msg.getMessage().contains("http")) {
-			linkHandler.putLink(msg);
+			if (msg.getMessage().contains("http")) {
+				linkHandler.putLink(msg);
+			}
+
+			// command, don't save the message!
+			if (msg.getMessage().contains(botname)
+					|| msg.getUsername().contains(botname)) {
+				logger.info("Hey, that's my name!");
+				chatHandler.handleMessage(msg);
+			} else {
+				// standard message saving
+				dao.putMessage(msg);
+				topic.pushToTopic(msg);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			chatHandler.debugMessage(e.getMessage());
 		}
 		
-		// command, don't save the message!
-		if (msg.getMessage().contains(botname) || msg.getUsername().contains(botname)) {
-			logger.info("Hey, that's my name!");
-			chatHandler.handleMessage(msg);
-		} else {
-			// standard message saving
-			chatHandler.message(msg.getUsername(), "works");
-			dao.putMessage(msg);
-			topic.pushToTopic(msg);
-		}
-		} 
-		catch (Exception e) {
-			chatHandler.message("benco", e.getMessage().split("\\r?\\n")[0]);
-		}
-		
-		arg0.getOut().setBody(om.writeValueAsString(msg));
-		
+		// set JSON as camel message body
+		camelExchange.getOut().setBody(om.writeValueAsString(msg));
+
 	}
-	
+
+	/*
+	 * Converts message from Camel exchange to JabberMessage
+	 */
 	private JabberMessage convertToMessage(Exchange exch) {
 		JabberMessage msg = new JabberMessage();
 		String user = extractUser(exch);
@@ -73,10 +81,11 @@ public class JabberProcessor implements Processor {
 		logger.info("New Message Processed: " + msg.toString());
 		return msg;
 	}
-	
+
 	/*
-	 * Extracts username from XMPP User string (user@domain.com/resource)
-	 * Uses resource as a name due to conferences using the conference name as 'user'.
+	 * Extracts username from XMPP User string (user@domain.com/resource) Uses
+	 * resource as a name due to conferences using the conference name as
+	 * 'user'.
 	 */
 	private String extractUser(Exchange exch) {
 		String userString = (String) exch.getIn().getHeader("CamelXmppFrom");

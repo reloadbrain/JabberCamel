@@ -13,6 +13,15 @@ public class User {
 	@Basic(optional=false) private String userName;
 	@Basic(optional=false) private long messageCount;
 	
+	public User(long id, String userName, long messageCount) {
+		this.id = id;
+		this.userName = userName;
+		this.messageCount = messageCount;
+	}
+	public User() {
+		
+	}
+	
 	public long getMessageCount() {
 		return messageCount;
 	}

@@ -8,21 +8,39 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import com.bencompany.jabbercamel.camel.ChatHandler;
  
 @Component
-public final class GoogleUrlShortener {
+@PropertySource({ "classpath:localhost.properties" })
+public class GoogleUrlShortener {
 	static Logger logger = Logger.getLogger(GoogleUrlShortener.class);
 	
-    public static String shorten(String longUrl) {
+	@Autowired
+	private Environment env;
+	
+	@Value("${apikey.google}")
+	public String googleAPIKey;
+	
+	@Value("${xmpp.server") 
+	public String xmppServer;
+	
+    public String shorten(String longUrl) {
     	logger.info("Shortening " + longUrl);
         if (longUrl == null) {
             return longUrl;
         }
         
         try {
-            URL url = new URL("https://www.googleapis.com/urlshortener/v1/url");
+        	// set up HTTP Request
+            URL url = new URL("https://www.googleapis.com/urlshortener/v1/url?key=" + googleAPIKey );
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
@@ -31,7 +49,6 @@ public final class GoogleUrlShortener {
             writer.write("{'longUrl':'" +longUrl + "'}");
             
             writer.close();
- 
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line = null;
@@ -40,10 +57,9 @@ public final class GoogleUrlShortener {
             }
             String json = sb.toString();
             return json.substring(json.indexOf("http"), json.indexOf("\"", json.indexOf("http")));
-        } catch (MalformedURLException e) {
-        	return e.getMessage();
-        } catch (IOException e) {
-        	return e.getMessage();
+        } catch (Exception e) {
+        	logger.error(e.getMessage());
+        	return "Sorry, can't get a link for you right now!";
         }
     }
  
