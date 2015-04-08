@@ -7,6 +7,8 @@ A Java Spring application which spits out XMPP chat onto a website and does some
 * Apache Camel
 * MySQL
 
+![Look at this awesome diagram](/../master/diagram.png?raw=true "Diagram")
+
 ## WTF does it do
 JabberCamel connects to an XMPP conference using Camel, which then converts the raw message to a Java object, persists it to a database, then converts it to JSON and sends it to a WebSocket topic, for consumption by front-end clients.
 
