@@ -22,11 +22,3 @@ Use ``` mvn resources:resources ``` to construct the persistence.xml file.
 Create your database prior to running, but the tables should create automatically thanks to the wizardry of JPA.
 
 Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
-
-## TODO
-- [x] Popular Links
-- [ ] Bot Commands
-  - [ ] Last Seen
-- [ ] Emotion Tracking
-- [ ] Graphs and Graphs and Graphs and Graphs and Graphs and Graphs 
-- [ ] Fix Maven Resources Plugin (Integrate into build process)
