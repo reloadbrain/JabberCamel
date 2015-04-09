@@ -1,4 +1,4 @@
-@CHARSET "ISO-8859-1";
+/* @CHARSET "ISO-8859-1";
 
 .message {
 	word-wrap: break-word;
@@ -12,8 +12,11 @@ span#timestamp {
 	font-size: 0.6em;
 	color: #aeaeae;
 }
+*/
 
 /* Popular Links */
+
+/*
 span#op { font-size:10px; color: #aeaeae;}
 span#latest { font-size:10px; color: #aeaeae;}
 span#count { font-size:10px; color: #aeaeae;}
@@ -28,4 +31,23 @@ span#url { display: block; margin-bottom: -8px; }
 	background-color: #FAFAFA;
 	font-size: 12px;
 	font-family: Courier New;
+} */
+
+body {
+  background-color: rgba(74,121,147,0.89);
+  background-image: radial-gradient(farthest-side ellipse at 10% 0, rgba(74,121,147,0.89),rgba(204,204,204,0.85) 80%,rgba(185,135,131,0.87) 120%);
+  /* background-image: -webkit-radial-gradient(10% 0, farthest-side ellipse, rgba(74,121,147,0.89), rgba(204,204,204,0.85) 80%, rgba(185,135,131,0.87) 120%); */
+  background-image: -moz-radial-gradient(10% 0, farthest-side ellipse, rgba(74,121,147,0.89), rgba(204,204,204,0.85) 80%, rgba(185,135,131,0.87) 120%);
+  background-attachment: fixed, fixed;
+}
+
+.row div {
+	-webkit-transition: width 0.3s ease, margin 0.3s ease;
+    -moz-transition: width 0.3s ease, margin 0.3s ease;
+    -o-transition: width 0.3s ease, margin 0.3s ease;
+    transition: width 0.3s ease, margin 0.3s ease;
+}
+
+#searchname {
+	margin:20px;
 }
