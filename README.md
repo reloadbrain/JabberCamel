@@ -1,5 +1,7 @@
 # JabberCamel
-A Java Spring application which spits out XMPP chat onto a website and does some other cool stuff.
+A Java Spring application which uses Apache Camel, JPA and WebSockets to record and analyse XMPP group chats with a web front-end. Also will contain bot commands such as RSS feeds, reminders, etc.
+
+You'll need a XMPP account to work on it - have you considered [JabberZac](http://jabberzac.org)?
 
 
 ## Technology
