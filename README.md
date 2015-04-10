@@ -1,5 +1,7 @@
 # JabberCamel
-A Java Spring application which spits out XMPP chat onto a website and does some other cool stuff.
+A Java Spring application which uses Apache Camel, JPA and WebSockets to record and analyse XMPP group chats with a web front-end. Also will contain bot commands such as RSS feeds, reminders, etc.
+
+You'll need a XMPP account to work on it - have you considered [JabberZac](http://jabberzac.org)?
 
 
 ## Technology
@@ -20,11 +22,3 @@ Use ``` mvn resources:resources ``` to construct the persistence.xml file.
 Create your database prior to running, but the tables should create automatically thanks to the wizardry of JPA.
 
 Once it's running, go to ``` localhost:8080/jabbercamel ```. That's it.
-
-## TODO
-- [x] Popular Links
-- [ ] Bot Commands
-  - [ ] Last Seen
-- [ ] Emotion Tracking
-- [ ] Graphs and Graphs and Graphs and Graphs and Graphs and Graphs 
-- [ ] Fix Maven Resources Plugin (Integrate into build process)
