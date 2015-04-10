@@ -29,6 +29,12 @@ function incrementUserMessageCount(message) {
 	var rowMessageCount = $(row).children("#messageCount")
 	var value = parseInt(rowMessageCount.text())
 	$(rowMessageCount).text(value + 1);
+	} else {
+		var newString = '<tr id="msgCount'+message.username+'">'
+		+ '<td id="username">'+ message.username + '</td>'
+		+ '<td id="messageCount">1</td>'
+		+ '</tr>'
+		$("#mostactive").append(newString);
 	}
 }
 /**
@@ -167,7 +173,7 @@ $(document).ready(function() {
 
 	// Socket load all the new shit!
 	// http://localhost:8080/jabbercamel/jabbermessages
-	socket = new SockJS('http://localhost:8080/jabbercamel/jabbermessages');
+	socket = new SockJS('http://bencompany.net:8080/jabbercamel/jabbermessages');
 	client = Stomp.over(socket);
 	client.connect("user", "pass", connectCallback, errorCallback);
 

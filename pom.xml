@@ -15,6 +15,13 @@
 		<camel-version>2.14.1</camel-version>
 	</properties>
 	<dependencies>
+	
+	<!--  tomcat websockets -->
+	<dependency>
+	   <groupId>org.apache.tomcat.embed</groupId>
+	   <artifactId>tomcat-embed-websocket</artifactId>
+	   <version>7.0.52</version>
+	</dependency>
 		<!-- ROME -->
 		<dependency>
 			<groupId>com.rometools</groupId>
@@ -264,6 +271,16 @@
 							<version>2.3.0</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+				<plugin>
+				  <groupId>org.apache.tomcat.maven</groupId>
+				  <artifactId>tomcat7-maven-plugin</artifactId>
+				  <version>2.2</version>
+				  <configuration>
+				    <url>http://bencompany.net:8080/manager/text</url>
+				    <server>BencompanyTomcat</server>
+				    <path>/jabbercamel</path>
+				  </configuration>
 				</plugin>
 				<plugin>
 				    <groupId>org.apache.maven.plugins</groupId>

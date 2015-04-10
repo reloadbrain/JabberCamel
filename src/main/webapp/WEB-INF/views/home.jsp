@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">JabberCamel</h1>
-                        <p class="intro-text">Some shit made by Benco that sucks.</p>
+                        <p class="intro-text">Analyse your XMPP chats.</p>
                        	<p class="intro-text">Scroll down to get analyzin'.</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-5 col-lg-offset-1">
-                <h2>Cunts that need to shut up</h2>
+                <h2>stop talking</h2>
                 <table class="table" id="mostactive">
                 <tr>
                 <th>Person</th>
@@ -112,7 +112,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Pics</h2>
-                <p>For when you really want to see some Hammyhamm pics.</p>
+                <p>Coming soon</p>
                 
             </div>
         </div>
@@ -122,7 +122,7 @@
         <div class="row">
             <div id="searchbox" class="col-lg-8 col-lg-offset-2">
                 <h2>Search</h2>
-                <p>Want to know how much shit you post? Find out here.</p>
+                <p>Coming soon</p>
     <input type="text" class="form-control" id="searchname" placeholder="Enter your dumb name here">
   	<button id="searchbutton" class="btn btn-default">Search</button>
             </div>

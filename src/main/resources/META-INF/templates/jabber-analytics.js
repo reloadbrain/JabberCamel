@@ -29,6 +29,12 @@ function incrementUserMessageCount(message) {
 	var rowMessageCount = $(row).children("#messageCount")
 	var value = parseInt(rowMessageCount.text())
 	$(rowMessageCount).text(value + 1);
+	} else {
+		var newString = '<tr id="msgCount'+message.username+'">'
+		+ '<td id="username">'+ message.username + '</td>'
+		+ '<td id="messageCount">1</td>'
+		+ '</tr>'
+		$("#mostactive").append(newString);
 	}
 }
 /**
