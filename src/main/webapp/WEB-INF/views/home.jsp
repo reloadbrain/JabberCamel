@@ -63,7 +63,6 @@
         </div>
     </header>
 
-    <!-- About Section -->
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-5 col-lg-offset-1">
@@ -76,8 +75,8 @@
                 </table>
             </div>
             <div class="col-lg-5 col-lg-offset-1">
-                    <h2>Graphs</h2>
-                    <p>hell yeah, graphs.</p>
+                    <h2>LiveChat</h2>
+                    <div id="livechat"></div>
                     
                 </div>
         </div>
@@ -141,13 +140,10 @@
             <br />
             <ul class="list-inline banner-social-buttons">
                     <li>
-                        <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                        <a href="https://github.com/benco03/JabberCamel" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
                     </li>
                     <li>
-                        <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                    </li>
-                    <li>
-                        <a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                        <a href="http://bencompany.net" class="btn btn-default btn-lg"><i class="fa fa-fw"></i> <span class="network-name">Website</span></a>
                     </li>
                 </ul>
         </div>
@@ -157,6 +153,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
 	<script src="resources/js/jquery.js"></script>
 	<script src="resources/js/jquery.easing.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="resources/js/grayscale.js"></script>
 	<script src="resources/js/stomp.js"></script>
 	<script src="resources/js/bootstrap.js"></script>

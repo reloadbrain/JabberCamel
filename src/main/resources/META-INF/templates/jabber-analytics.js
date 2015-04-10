@@ -12,7 +12,7 @@ function processActiveUsers(data) {
 			function(idx) {
 				// console.log(data[idx].userName + ":" +
 				// data[idx].messageCount);
-				var newString = '<tr>'
+				var newString = '<tr id="msgCount'+data[idx].userName+'">'
 						+ '<td id="username">'+ data[idx].userName + '</td>'
 						+ '<td id="messageCount">' + data[idx].messageCount + '</td>'
 						+ '</tr>'
@@ -20,6 +20,17 @@ function processActiveUsers(data) {
 			});
 }
 
+function incrementUserMessageCount(message) {
+	$("tr#msgCount" + message.username).effect("highlight", {color: 'white'})
+	var row = $("tr#msgCount" + message.username);
+	
+	// only bother doing the rest if it's a valid user with a count
+	if (row.length != 0) {
+	var rowMessageCount = $(row).children("#messageCount")
+	var value = parseInt(rowMessageCount.text())
+	$(rowMessageCount).text(value + 1);
+	}
+}
 /**
  * Processes HTML for the Latest Messages list
  * 
@@ -30,16 +41,13 @@ function processLatestMessages(data) {
 	$(data)
 			.each(
 					function(idx) {
-						// console.log(data[idx].timestamp + "| " +
-						// data[idx].username + data[idx].message);
-						var newString = '<div class="message'
-								+ data[idx].id
-								+ '"><span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="'
-								+ data[idx].timestamp + '"id="username">'
-								+ data[idx].username + '</span>' + ':'
-								+ stripHTML(data[idx].message) + '</div>'
-						$("#talksTooMuch").append(newString);
-						$(document).foundation('tooltip', 'reflow');
+						var newString = '<div class="message" id="'	+ data[idx].id + '">'
+							+ '<span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="' + data[idx].timestamp + '"id="username">'
+									+ data[idx].username 
+							+ ': </span>'
+							+ stripHTML(data[idx].message) 
+							+ '</div>'
+						$("#livechat").append(newString);
 					});
 }
 
@@ -70,20 +78,18 @@ function stripHTML(msg) {
 function processNewMessage(msg) {
 
 	// update message counts
-	msgObj = JSON.parse(msg.body);
-	var msgCountSelect = "#userMsgCount-" + msgObj.username
-			+ " > p > #messageCount"
-	var msgCount = $(msgCountSelect).text()
-	if (msgCount != "") {
-		$(msgCountSelect).text(++msgCount);
-	}
+	var msgObj = JSON.parse(msg.body);
+	
+	incrementUserMessageCount(msgObj); 
 
 	// prepend message to latest msgs
-	var newMessage = '<div class="message' + msgObj.id
-			+ '"><span id="username">' + msgObj.username + '</span>' + ':'
-			+ stripHTML(msgObj.message) + '<br/><span id="timestamp">'
-			+ msgObj.timestamp + '</span></div>'
-	$("#latestmessages").prepend(newMessage);
+	var newMessage = '<div class="message" id="'	+ msgObj.id + '">'
+	+ '<span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="' + msgObj.timestamp + '"id="username">'
+			+ msgObj.username 
+	+ ': </span>'
+	+ stripHTML(msgObj.message) 
+	+ '</div>'
+	$("#livechat").prepend(newMessage);
 }
 
 function toggleConnectionStatus(toggle) {
@@ -163,6 +169,6 @@ $(document).ready(function() {
 	// http://localhost:8080/jabbercamel/jabbermessages
 	socket = new SockJS('${topic.url}');
 	client = Stomp.over(socket);
-	client.connect("user", "pass", connectCallback, errorCallback());
+	client.connect("user", "pass", connectCallback, errorCallback);
 
 })

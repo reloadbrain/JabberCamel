@@ -1,22 +1,8 @@
 /* @CHARSET "ISO-8859-1";
 
-.message {
-	word-wrap: break-word;
-}
-
-span#username {
-	font-weight: bold;	
-}
-
-span#timestamp {
-	font-size: 0.6em;
-	color: #aeaeae;
-}
-*/
-
 /* Popular Links */
 
-/*
+
 span#op { font-size:10px; color: #aeaeae;}
 span#latest { font-size:10px; color: #aeaeae;}
 span#count { font-size:10px; color: #aeaeae;}
@@ -26,12 +12,9 @@ span#url { display: block; margin-bottom: -8px; }
 	overflow: auto;
 	width: 100%;
 	height: 70%;
-	border: 1px solid #dedede;
 	padding: 5px;
-	background-color: #FAFAFA;
 	font-size: 12px;
-	font-family: Courier New;
-} */
+} 
 
 body {
   background-color: rgba(74,121,147,0.89);
@@ -50,4 +33,13 @@ body {
 
 #searchname {
 	margin:20px;
+}
+
+.message {
+  text-align: left;
+}
+
+span#username {
+	font-weight:bold;
+	padding-right:2px;
 }

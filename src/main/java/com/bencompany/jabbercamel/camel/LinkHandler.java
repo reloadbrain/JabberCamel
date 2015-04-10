@@ -15,7 +15,6 @@ public class LinkHandler {
 	
 	@Autowired JabberDao dao; // Database access
 	
-	//TODO: Strip link out of rest of message
 	public void putLink(JabberMessage msg) {
 		logger.info("Saving link:" + msg.getMessage());
 		Link existingLink = dao.getLink(msg.getMessage());
