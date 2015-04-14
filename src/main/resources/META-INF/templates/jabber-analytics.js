@@ -1,6 +1,7 @@
 var client; // WebSockets client
 var socket; // socket itself
 
+var messagesToShow = 20;
 /**
  * Processes HTML for the Active Users list
  * 
@@ -96,6 +97,36 @@ function processNewMessage(msg) {
 	+ stripHTML(msgObj.message) 
 	+ '</div>'
 	$("#livechat").prepend(newMessage);
+	refreshLiveChatFading();
+}
+
+function refreshLiveChatFading() {
+	// reset opacity on all messages
+	var messageCount = $(".message").length;
+	var messagesToShow = 20;
+	// if too many messages
+	if (messageCount > messagesToShow) {
+		// delete all messages messagesToShow amount
+		for (var i = messageCount; i > messagesToShow; i--) {
+			$($(".message")[i]).remove();
+		}
+	}
+	
+	// reset opacity
+	$(".message").each(function(idx, obj) {
+		$(obj).css("opacity", 1.0);
+		});
+	
+	// set opacity on last 5 messages
+	var opacity = 0.2;
+	for (var i = messagesToShow; i > messagesToShow - 5; i--) {
+		
+		console.log(msgObj.attr("id") + " opacity setting to " + opacity);
+		
+		var msgObj = $($(".message")[i]);
+		msgObj.css("opacity", opacity);
+		opacity += 0.2;
+	}
 }
 
 function toggleConnectionStatus(toggle) {

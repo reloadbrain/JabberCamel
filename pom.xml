@@ -16,12 +16,7 @@
 	</properties>
 	<dependencies>
 	
-	<!--  tomcat websockets -->
-	<dependency>
-	   <groupId>org.apache.tomcat.embed</groupId>
-	   <artifactId>tomcat-embed-websocket</artifactId>
-	   <version>7.0.52</version>
-	</dependency>
+
 		<!-- ROME -->
 		<dependency>
 			<groupId>com.rometools</groupId>
@@ -258,7 +253,7 @@
 					<executions>
 						<execution>
 							<id>enhancer</id>
-							<phase>process-classes</phase>
+							<phase></phase>
 							<goals>
 								<goal>enhance</goal>
 							</goals>
@@ -289,7 +284,7 @@
 				    <executions>
 				        <execution>
 				            <id>fill-properties1</id>
-				            <phase>prepare-package</phase>
+				            <phase>process-resources</phase>
 				            <goals>
 				                <goal>copy-resources</goal>
 				            </goals>
