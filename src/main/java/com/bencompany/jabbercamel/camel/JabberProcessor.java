@@ -46,7 +46,7 @@ public class JabberProcessor implements Processor {
 		try {
 			// save link
 			if (msg.getMessage().contains("http")) {
-				linkHandler.putLink(msg);
+				linkHandler.putLinks(msg);
 			}
 
 			// command, don't save the message!

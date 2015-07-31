@@ -54,12 +54,12 @@ public class JabberDao {
 	}
 	
 	@Transactional
-	public Link getLink(String url) {
+	public List<Link> getLinks(String url) {
 		try {
 			Query query = em.createNativeQuery("SELECT * FROM Link WHERE url = ?", Link.class);
 			query.setParameter(1, url);
-			Link link = (Link) query.getSingleResult();
-			return link;
+			List<Link> links = query.getResultList();
+			return links;
 		} catch (Exception e){
 			return null;
 		}
@@ -114,9 +114,7 @@ public class JabberDao {
 	}
 
 	@Transactional
-	public void putLink(Link existingLink) {
-		em.persist(existingLink);
+	public void putLinks(List<Link> existingLinks) {
+		em.persist(existingLinks);
 	}
-	
-	
 }

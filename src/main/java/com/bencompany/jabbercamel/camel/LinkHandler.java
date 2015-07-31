@@ -9,23 +9,26 @@ import org.springframework.stereotype.Component;
 import com.bencompany.jabbercamel.model.JabberMessage;
 import com.bencompany.jabbercamel.model.Link;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class LinkHandler {
 	Logger logger = LoggerFactory.getLogger(LinkHandler.class);
-	
+
 	@Autowired JabberDao dao; // Database access
-	
-	public void putLink(JabberMessage msg) {
+
+	public void putLinks(JabberMessage msg) {
 		logger.info("Saving link:" + msg.getMessage());
-		Link existingLink = dao.getLink(msg.getMessage());
-		if (existingLink != null) {
-			logger.info("Link exists, updating:" + msg.getMessage());
-			updateLink(existingLink, msg.getUsername());
+		List<Link> existingLinks = dao.getLinks(msg.getMessage());
+		if ((existingLinks != null) && (!existingLinks.isEmpty())) {
+			logger.info("Links exist, updating:" + msg.getMessage());
+			updateLinks(existingLinks, msg.getUsername());
 		} else {
-			logger.info("Link doesn't exist, creating:" + msg.getMessage());
+			logger.info("Links don't exist, creating:" + msg.getMessage());
 			try {
-			Link link = convertMessageToLink(msg);
-			dao.putLink(link);
+			List<Link> links = convertMessageToLink(msg);
+			dao.putLinks(links);
 			}
 			catch (Exception e) {
 				logger.error("Could not find link in message. Ignoring");
@@ -36,43 +39,57 @@ public class LinkHandler {
 	/*
 	 * Converts JabberMessage object to Link object
 	 */
-	public Link convertMessageToLink(JabberMessage msg) throws Exception {
+	public List<Link> convertMessageToLink(JabberMessage msg) throws Exception {
+        ArrayList<Link> links = new ArrayList<Link>();
+
 		Link link = new Link();
 		link.setCount(1);
 		link.setOp(msg.getUsername());
-		link.setUrl(stripLink(msg.getMessage()));
 		link.setLastPostedBy(msg.getUsername());
-		return link;
-		
+
+        for (String url : stripLink(msg.getMessage())) {
+            link.setUrl(url);
+			links.add(link);
+        }
+
+		return links;
 	}
 	
 	/*
 	 * Strips link from message
 	 */
-	private String stripLink(String message) throws Exception {
+	private List<String> stripLink(String message) throws Exception {
 		String[] list = message.split(" ");
-		String url = null;
+		ArrayList<String> urls = new ArrayList<String>();
 		
 		for (int i = 0; i < list.length; i++) {
-			if (list[i].contains("http")) {
-				url = list[i];
+            String word = list[i];
+
+			if (word.contains("http")) {
+				urls.add(word);
 			}
 		}
-		if (url == null) {
+		if (urls.isEmpty()) {
 			throw new Exception("URL could not be found");
 		} else {
-			return url;
+			return urls;
 		}
 	}
 
 	/*
 	 * Increments link count and updates last poster
 	 */
-	private void updateLink(Link existingLink, String latestUser) {
-		long count = existingLink.getCount();
-		existingLink.setCount(++count);
-		existingLink.setLastPostedBy(latestUser);
-		dao.putLink(existingLink);
+	private void updateLinks(List<Link> existingLinks, String latestUser) {
+        long count;
+
+        for (Link existingLink : existingLinks) {
+            count = existingLink.getCount();
+            existingLink.setCount(++count);
+            existingLink.setLastPostedBy(latestUser);
+        }
+
+
+        dao.putLinks(existingLinks);
 	}
 
 

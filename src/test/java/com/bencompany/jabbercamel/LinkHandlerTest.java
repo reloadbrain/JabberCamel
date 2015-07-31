@@ -12,14 +12,16 @@ import com.bencompany.jabbercamel.camel.*;
 import com.bencompany.jabbercamel.model.JabberMessage;
 import com.bencompany.jabbercamel.model.Link;
 
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= "classpath:test-context.xml")
 public class LinkHandlerTest {
 
 	@Autowired LinkHandler lh;
 	@Autowired JabberDao dao;
-	
-	
+
+
 	@Test
 	public void testLinkStripsCorrectly() {
 		JabberMessage msg = new JabberMessage();
@@ -27,19 +29,19 @@ public class LinkHandlerTest {
 		msg.setId(1);
 		msg.setUsername("Test");
 		msg.setTimestamp("NOW!");
-		Link link = null;
+		List<Link> links = null;
 		try {
-			link = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLink(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
-		if (link.getUrl().equals("http://google.com/fwd.txt")) {
-			
+		if (links.get(0).getUrl().equals("http://google.com/fwd.txt")) {
+
 		} else {
 			fail("Message not stripped correctly");
 		}
 	}
-	
+
 	// TODO: this
 	//@Test
 	public void NoHttpInLink() {
@@ -48,19 +50,19 @@ public class LinkHandlerTest {
 		msg.setId(1);
 		msg.setUsername("Test");
 		msg.setTimestamp("NOW!");
-		Link link = null;
+		List<Link> links = null;
 		try {
-			link = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLink(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
-		if (link.getUrl().equals("www.reddit.com")) {
+		if (links.get(0).getUrl().equals("www.reddit.com")) {
 			// pass
 		} else {
 			fail("Didn't pick up www URL");
 		}
 	}
-	
+
 	// TODO: i dont even know how to handle this yet
 	@Test
 	public void TestTwoLinksAreHandledOkay() {
@@ -69,20 +71,23 @@ public class LinkHandlerTest {
 		msg.setId(1);
 		msg.setUsername("Test");
 		msg.setTimestamp("NOW!");
-		Link link = null;
+		List<Link> links = null;
 		try {
-			link = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLink(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
-		if (link.getUrl().equals("http://reddit.com") || link.getUrl().equals("http://google.com")) {
-			// pass
+		boolean pass = true;
+		for (Link link : links) {
+            pass = pass &&
+                    (link.getUrl().equals("http://reddit.com")
+                    || link.getUrl().equals("http://google.com"));
 		}
-		else {
+
+        if (!pass)
 			fail("Can't handle two URL's");
-		}
 	}
-	
+
 	// TODO: randomise URL or include previous URL count
 	//@Test
 	public void testLinkPersists() {
@@ -93,8 +98,8 @@ public class LinkHandlerTest {
 		msg.setTimestamp("NOW!");
 		Link link;
 		try {
-			lh.putLink(msg);
-			link = dao.getLink("http://google.com/fwd.txt");
+			lh.putLinks(msg);
+			link = dao.getLinks("http://google.com/fwd.txt").get(0);
 			assert(link.getCount() == 1);
 			if (link.getCount() != 1) {
 				fail("Link count meant to be 1 but is:" + link.getCount());
@@ -104,6 +109,6 @@ public class LinkHandlerTest {
 		}
 		fail("I'm bad at logic");
 	}
-	
+
 
 }
