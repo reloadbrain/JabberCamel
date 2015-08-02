@@ -31,7 +31,7 @@ public class LinkHandlerTest {
 		msg.setTimestamp("NOW!");
 		List<Link> links = null;
 		try {
-			links = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLinks(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
@@ -52,7 +52,7 @@ public class LinkHandlerTest {
 		msg.setTimestamp("NOW!");
 		List<Link> links = null;
 		try {
-			links = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLinks(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
@@ -63,7 +63,6 @@ public class LinkHandlerTest {
 		}
 	}
 
-	// TODO: i dont even know how to handle this yet
 	@Test
 	public void TestTwoLinksAreHandledOkay() {
 		JabberMessage msg = new JabberMessage();
@@ -73,7 +72,7 @@ public class LinkHandlerTest {
 		msg.setTimestamp("NOW!");
 		List<Link> links = null;
 		try {
-			links = lh.convertMessageToLink(msg);
+			links = lh.convertMessageToLinks(msg);
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
@@ -98,7 +97,7 @@ public class LinkHandlerTest {
 		msg.setTimestamp("NOW!");
 		Link link;
 		try {
-			lh.putLinks(msg);
+			lh.process(msg);
 			link = dao.getLinks("http://google.com/fwd.txt").get(0);
 			assert(link.getCount() == 1);
 			if (link.getCount() != 1) {

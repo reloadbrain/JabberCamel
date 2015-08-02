@@ -43,10 +43,13 @@ public class JabberProcessor implements Processor {
 		JabberMessage msg = convertToMessage(camelExchange);
 
 		// don't do any message processing outside of this!
+		
+		// TODO: remove any logic from this class, put all logic into relevant modules to assist with 
+		// #22 Modular Architecture
 		try {
 			// save link
 			if (msg.getMessage().contains("http")) {
-				linkHandler.putLinks(msg);
+				linkHandler.process(msg);
 			}
 
 			// command, don't save the message!

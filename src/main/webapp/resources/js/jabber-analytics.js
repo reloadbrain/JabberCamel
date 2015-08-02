@@ -120,6 +120,9 @@ function refreshLiveChatFading() {
 	// set opacity on last 5 messages
 	var opacity = 0.2;
 	for (var i = messagesToShow; i > messagesToShow - 5; i--) {
+		
+		console.log(msgObj.attr("id") + " opacity setting to " + opacity);
+		
 		var msgObj = $($(".message")[i]);
 		msgObj.css("opacity", opacity);
 		opacity += 0.2;

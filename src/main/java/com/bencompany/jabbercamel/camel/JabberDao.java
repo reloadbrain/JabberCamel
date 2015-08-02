@@ -94,7 +94,6 @@ public class JabberDao {
 		getUserQuery.setParameter(1, user);
 		
 		User updatedUser = null;
-		boolean userCreated = false;
 		
 		try {
 		updatedUser = (User) getUserQuery.getSingleResult();
@@ -102,10 +101,9 @@ public class JabberDao {
 			updatedUser = new User();
 			updatedUser.setUserName(user);
 			updatedUser.setMessageCount(1);
-			userCreated = true;
 		} 
 		
-		if (!userCreated){
+		if (updatedUser != null){
 			long messageCount = updatedUser.getMessageCount();
 			updatedUser.setMessageCount(++messageCount);
 		}
@@ -114,7 +112,25 @@ public class JabberDao {
 	}
 
 	@Transactional
-	public void putLinks(List<Link> existingLinks) {
-		em.persist(existingLinks);
+	public void putLinks(List<Link> links) {
+		for (Link link : links) {
+			em.merge(link);
+		}
+	}
+	
+	@Transactional
+	public void putLink(Link link) {
+		em.merge(link);
+	}
+	
+	public Link getLinkByURL(String url) {
+		Query query = em.createNativeQuery("SELECT * FROM Link WHERE url = ?", Link.class);
+		query.setParameter(1, url);
+		List<Link> results = query.getResultList();
+		if (results.size() != 0) {
+			Link linkToReturn = results.get(0);
+			return linkToReturn;
+		}
+		return null;
 	}
 }
