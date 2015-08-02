@@ -11,13 +11,13 @@ public class Link {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;
 	@Basic(optional=false) private String url;
-	@Basic(optional=false) private long count;
+	@Basic(optional=false) private long count_;
 	@Basic(optional=false) private String op;
 	@Basic(optional=false) private String lastPostedBy;
 	
-	public Link(String url, long count, String op, String lastPostedBy) {
+	public Link(String url, long count_, String op, String lastPostedBy) {
 		this.url = url;
-		this.count = count;
+		this.count_ = count_;
 		this.op = op;
 		this.lastPostedBy = lastPostedBy;
 	}
@@ -32,11 +32,11 @@ public class Link {
 	public void setLastPostedBy(String lastPostedBy) {
 		this.lastPostedBy = lastPostedBy;
 	}
-	public long getCount() {
-		return count;
+	public long getCount_() {
+		return count_;
 	}
-	public void setCount(long count) {
-		this.count = count;
+	public void setCount_(long count) {
+		this.count_ = count;
 	}
 	public long getId() {
 		return id;

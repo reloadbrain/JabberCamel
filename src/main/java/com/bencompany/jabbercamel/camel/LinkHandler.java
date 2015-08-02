@@ -32,7 +32,7 @@ public class LinkHandler {
         if (stringUrls != null) {
 	        for (String url : stringUrls) {
 	        	Link link = new Link();
-	    		link.setCount(1);
+				link.setCount_(1);
 	    		link.setOp(msg.getUsername());
 	    		link.setLastPostedBy(msg.getUsername());
 	            link.setUrl(url);
@@ -63,16 +63,17 @@ public class LinkHandler {
 	 * Increments link count and updates last poster
 	 */
 	
-	private List<Link> updateLinks(List<Link> links, String latestUser) {
+	private List<Link> updateLinks(List<Link> links, String latestUser, JabberDao dao) {
 		List<Link> updatedLinks = new ArrayList<Link>();
 		if (links != null && !links.isEmpty()) {
 			for (Link link : links) {
 				// check if link already exists, and if so increment existing count
 				Link existingLink = dao.getLinkByURL(link.getUrl());
 				if (existingLink != null) {
-					long updatedCount = existingLink.getCount();
+					long updatedCount = existingLink.getCount_();
 					updatedCount = ++updatedCount;
-					existingLink.setCount(updatedCount);
+					existingLink.setCount_(updatedCount);
+					existingLink.setLastPostedBy(latestUser);
 					updatedLinks.add(existingLink);
 				} else {
 					// otherwise just add a new one
