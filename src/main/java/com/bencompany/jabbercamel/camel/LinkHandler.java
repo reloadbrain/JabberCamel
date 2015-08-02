@@ -1,10 +1,8 @@
 package com.bencompany.jabbercamel.camel;
 
 
-import org.apache.commons.collections.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bencompany.jabbercamel.model.JabberMessage;
@@ -17,13 +15,10 @@ import java.util.List;
 public class LinkHandler {
 	Logger logger = LoggerFactory.getLogger(LinkHandler.class);
 
-	@Autowired JabberDao dao; // Database access
-
-	
-	public void process(JabberMessage msg) {
+	public void process(JabberMessage msg, JabberDao dao) {
 		logger.info("Saving links: " + msg.getMessage());
 		List<Link> updatedLinks = convertMessageToLinks(msg);
-		updatedLinks = updateLinks(updatedLinks, msg.getUsername());
+		updatedLinks = updateLinks(updatedLinks, msg.getUsername(), dao);
 		dao.putLinks(updatedLinks);
 		logger.info("Link saving complete");
 	}

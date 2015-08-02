@@ -49,7 +49,7 @@ public class JabberProcessor implements Processor {
 		try {
 			// save link
 			if (msg.getMessage().contains("http")) {
-				linkHandler.process(msg);
+				linkHandler.process(msg, dao);
 			}
 
 			// command, don't save the message!
