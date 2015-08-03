@@ -21,11 +21,10 @@ public class LinkHandlerTest {
 	@Autowired LinkHandler lh;
 	@Autowired JabberDao dao;
 
-
 	@Test
 	public void testLinkStripsCorrectly() {
 		JabberMessage msg = new JabberMessage();
-		msg.setMessage("Hello There! http://google.com/fwd.txt This is a test");
+		msg.setMessage("Hello There! http://google.com/fwdi.txt This is a test");
 		msg.setId(1);
 		msg.setUsername("Test");
 		msg.setTimestamp("NOW!");
@@ -35,7 +34,7 @@ public class LinkHandlerTest {
 		} catch (Exception e) {
 			fail("Couldnt convert message to link");
 		}
-		if (links.get(0).getUrl().equals("http://google.com/fwd.txt")) {
+		if (links.get(0).getUrl().equals("http://google.com/fwdi.txt")) {
 
 		} else {
 			fail("Message not stripped correctly");
@@ -77,37 +76,137 @@ public class LinkHandlerTest {
 			fail("Couldnt convert message to link");
 		}
 		boolean pass = true;
-		for (Link link : links) {
-            pass = pass &&
-                    (link.getUrl().equals("http://reddit.com")
-                    || link.getUrl().equals("http://google.com"));
-		}
+		pass = pass && (links.get(0).getUrl().equals("http://reddit.com")
+                    && (links.get(1).getUrl().equals("http://google.com")));
 
         if (!pass)
 			fail("Can't handle two URL's");
 	}
 
 	// TODO: randomise URL or include previous URL count
-	//@Test
+	@Test
 	public void testLinkPersists() {
 		JabberMessage msg = new JabberMessage();
 		msg.setMessage("Hello There! http://google.com/fwd.txt This is a test");
 		msg.setId(1);
 		msg.setUsername("Test");
 		msg.setTimestamp("NOW!");
-		Link link;
+		List<Link> links;
 		try {
-			lh.process(msg);
-			link = dao.getLinks("http://google.com/fwd.txt").get(0);
-			assert(link.getCount() == 1);
-			if (link.getCount() != 1) {
-				fail("Link count meant to be 1 but is:" + link.getCount());
+			lh.process(msg, dao);
+			links = dao.getLinks(lh.convertMessageToLinks(msg));
+			if ((links == null) || (links.isEmpty())) {
+				fail("No links returned by dao");
+			}
+			if (links.size() != 1) {
+				fail("Dao returned wrong number of links");
+			}
+			Link link = links.get(0);
+			assert(link.getCount_() == 1);
+			if (link.getCount_() != 1) {
+				fail("Link count meant to be 1 but is:" + link.getCount_());
+			}
+			if (!link.getUrl().equals("http://google.com/fwd.txt")) {
+				fail("Link urls are different");
 			}
 		}catch (Exception e) {
 			fail();
 		}
-		fail("I'm bad at logic");
 	}
 
+	@Test
+	public void testMultipleLinksPersist() {
+		JabberMessage msg = new JabberMessage();
+		msg.setMessage("Hello There! http://google.com/bwt.txt http://github.com This is a test");
+		msg.setId(1);
+		msg.setUsername("Test");
+		msg.setTimestamp("NOW!");
+		List<Link> links;
+		try {
+			lh.process(msg, dao);
+			links = dao.getLinks(lh.convertMessageToLinks(msg));
+			if ((links == null) || (links.isEmpty())) {
+				fail("No links returned by dao");
+			}
+			if (links.size() != 2) {
+				fail("Dao returned wrong number of links");
+			}
+			assert (links.get(0).getCount_() == 1);
+			if (links.get(0).getCount_() != 1) {
+				fail("Link count meant to be 1 but is:" + links.get(0).getCount_());
+			}
+			assert (links.get(1).getCount_() == 1);
+			if (links.get(1).getCount_() != 1) {
+				fail("Link count meant to be 1 but is:" + links.get(1).getCount_());
+			}
+			if (!links.get(0).getUrl().equals("http://google.com/bwt.txt")) {
+				fail("First link url is different");
+			}
+			if  (!links.get(1).getUrl().equals("http://github.com")) {
+				fail("Second link url is different");
+			}
+		}catch (Exception e) {
+			fail();
+		}
+	}
 
+	@Test
+	public void testRepostOneLinkPersist() {
+		JabberMessage msg1 = new JabberMessage();
+		msg1.setMessage("Hello There! http://google.com/bwt5.txt http://github.com/git1 This is a test");
+		msg1.setId(1);
+		msg1.setUsername("Test1");
+		msg1.setTimestamp("NOW!");
+
+		JabberMessage msg2 = new JabberMessage();
+		msg2.setMessage("Hello There! http://google.com/bwt5.txt");
+		msg2.setId(1);
+		msg2.setUsername("Test2");
+		msg2.setTimestamp("NOW!");
+
+		List<Link> links;
+		try {
+			lh.process(msg1, dao);
+			lh.process(msg2, dao);
+
+			//this call will return the 2 links from message 1, but the repeated google link
+			//should have count == 2 and user = Test2
+			links = dao.getLinks(lh.convertMessageToLinks(msg1));
+
+			if ((links == null) || (links.isEmpty())) {
+				fail("No links returned by dao");
+			}
+			if (links.size() != 2) {
+				fail("Dao returned wrong number of links");
+			}
+			assert (links.get(0).getCount_() == 2);
+			if (links.get(0).getCount_() != 2) {
+				fail("Link count meant to be 1 but is:" + links.get(0).getCount_());
+			}
+			assert (links.get(1).getCount_() == 1);
+			if (links.get(1).getCount_() != 1) {
+				fail("Link count meant to be 1 but is:" + links.get(1).getCount_());
+			}
+			if (!links.get(0).getUrl().equals("http://google.com/bwt5.txt")) {
+				fail("First link url is different");
+			}
+			if  (!links.get(1).getUrl().equals("http://github.com/git1")) {
+				fail("Second link url is different");
+			}
+			if (!links.get(0).getOp().equals("Test1")) {
+				fail("First link op is incorrect");
+			}
+			if (!links.get(0).getLastPostedBy().equals("Test2")) {
+				fail("First link lastPostedBy is incorrect");
+			}
+			if  (!links.get(1).getOp().equals("Test1")) {
+				fail("Second link op is incorrect");
+			}
+			if  (!links.get(1).getLastPostedBy().equals("Test1")) {
+				fail("Second link lastPostedBy is incorrect");
+			}
+		}catch (Exception e) {
+			fail();
+		}
+	}
 }
