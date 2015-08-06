@@ -2,3 +2,6 @@ target/*
 src/main/resources/*.properties
 src/main/resources/META-INF/persistence.xml
 /target/
+.project
+.classpath
+.springBeans

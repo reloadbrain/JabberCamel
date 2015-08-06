@@ -29,7 +29,7 @@ public class LinkHandler implements Module {
         if (stringUrls != null) {
 	        for (String url : stringUrls) {
 	        	Link link = new Link();
-	    		link.setCount(1);
+	    		link.setOccurences(1);
 	    		link.setOp(msg.getUsername());
 	    		link.setLastPostedBy(msg.getUsername());
 	            link.setUrl(url);
@@ -67,9 +67,10 @@ public class LinkHandler implements Module {
 				// check if link already exists, and if so increment existing count
 				Link existingLink = dao.getLinkByURL(link.getUrl());
 				if (existingLink != null) {
-					long updatedCount = existingLink.getCount();
+					long updatedCount = existingLink.getOccurences();
 					updatedCount = ++updatedCount;
-					existingLink.setCount(updatedCount);
+					existingLink.setOccurences(updatedCount);
+					existingLink.setLastPostedBy(latestUser);
 					updatedLinks.add(existingLink);
 				} else {
 					// otherwise just add a new one

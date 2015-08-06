@@ -1,5 +1,6 @@
 package com.bencompany.jabbercamel.camel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -52,19 +53,25 @@ public class JabberDao {
 		List<User> results = query.getResultList();
 		return results; 
 	}
-	
+
 	@Transactional
-	public List<Link> getLinks(String url) {
-		try {
-			Query query = em.createNativeQuery("SELECT * FROM Link WHERE url = ?", Link.class);
-			query.setParameter(1, url);
-			List<Link> links = query.getResultList();
-			return links;
-		} catch (Exception e){
-			return null;
+	public List<Link> getLinks(List<Link> requestedLinks) {
+		ArrayList<Link> resultLinks = new ArrayList<Link>();
+
+		if ((requestedLinks == null) || (requestedLinks.isEmpty())) {
+			return resultLinks;
 		}
-		
+		for (Link requestedLink : requestedLinks) {
+			try {
+				Query query = em.createNativeQuery("SELECT * FROM Link WHERE url = ?", Link.class);
+				query.setParameter(1, requestedLink.getUrl());
+				Link resultLink = (Link) query.getSingleResult();
+				resultLinks.add(resultLink);
+			} catch (Exception e) {}
+		}
+		return resultLinks;
 	}
+
 	@Transactional
 	public List<Link> getPopularLinks() {
 		try {

@@ -11,12 +11,14 @@
 	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
 	<beans:import resource="db-context.xml"/>
-	<context:component-scan base-package="com.bencompany.jabbercamel" />
+
 	<annotation-driven />
 	<context:property-placeholder />
 	
 	<beans:bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
-		
+
 	<beans:bean id="linkHandler" class="com.bencompany.jabbercamel.modules.LinkHandler"/>
+
+	<beans:bean class="com.bencompany.jabbercamel.camel.JabberDao" />
 	
 </beans:beans>

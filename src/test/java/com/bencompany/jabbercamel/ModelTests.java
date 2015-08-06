@@ -27,7 +27,7 @@ public class ModelTests {
 	public void createLink() {
 		Link link = new Link("http://google.com", 1, "testuser", "testuser2");
 		assertEquals("http://google.com", link.getUrl());
-		assertEquals(1, link.getCount());
+		assertEquals(1, link.getOccurences());
 		assertEquals("testuser", link.getOp());
 		assertEquals("testuser2", link.getLastPostedBy());
 	}
