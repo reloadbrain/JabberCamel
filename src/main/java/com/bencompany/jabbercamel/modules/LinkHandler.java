@@ -1,4 +1,4 @@
-package com.bencompany.jabbercamel.camel;
+package com.bencompany.jabbercamel.modules;
 
 
 import org.apache.commons.collections.ListUtils;
@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bencompany.jabbercamel.camel.JabberDao;
 import com.bencompany.jabbercamel.model.JabberMessage;
 import com.bencompany.jabbercamel.model.Link;
 
@@ -14,20 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class LinkHandler {
+public class LinkHandler implements Module {
 	Logger logger = LoggerFactory.getLogger(LinkHandler.class);
 
 	@Autowired JabberDao dao; // Database access
 
-	
-	public void process(JabberMessage msg) {
-		logger.info("Saving links: " + msg.getMessage());
-		List<Link> updatedLinks = convertMessageToLinks(msg);
-		updatedLinks = updateLinks(updatedLinks, msg.getUsername());
-		dao.putLinks(updatedLinks);
-		logger.info("Link saving complete");
-	}
-	
 	/*
 	 * Converts JabberMessage object to List of Links. Each link will have a count of 1.
 	 */
@@ -88,5 +80,19 @@ public class LinkHandler {
 			logger.info("updateLinks: Empty list, returning");
 		}
 		return updatedLinks;
+	}
+
+	@Override
+	public boolean process(JabberMessage msg) {
+		if (msg.getMessage().contains("http")) {
+			logger.info("Saving links: " + msg.getMessage());
+			List<Link> updatedLinks = convertMessageToLinks(msg);
+			updatedLinks = updateLinks(updatedLinks, msg.getUsername());
+			dao.putLinks(updatedLinks);
+			logger.info("Link saving complete");
+			
+		}
+		// TODO: return better info, check for exceptions, etc.
+		return true;
 	}
 }

@@ -17,6 +17,6 @@
 	
 	<beans:bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 		
-	<beans:bean id="linkHandler" class="com.bencompany.jabbercamel.camel.LinkHandler"/>
+	<beans:bean id="linkHandler" class="com.bencompany.jabbercamel.modules.LinkHandler"/>
 	
 </beans:beans>

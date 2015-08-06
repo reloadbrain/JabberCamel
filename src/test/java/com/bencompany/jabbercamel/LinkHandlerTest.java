@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bencompany.jabbercamel.camel.*;
 import com.bencompany.jabbercamel.model.JabberMessage;
 import com.bencompany.jabbercamel.model.Link;
+import com.bencompany.jabbercamel.modules.LinkHandler;
 
 import java.util.List;
 

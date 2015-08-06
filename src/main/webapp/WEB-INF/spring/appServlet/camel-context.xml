@@ -18,15 +18,21 @@
 	<annotation-driven />
 	<context:property-placeholder location="classpath:localhost.properties"/>
 	
-	<!-- My Beans -->
+	<!-- FRAMEWORK -->
 	<beans:bean id="jabberProcessorBean"
 		class="com.bencompany.jabbercamel.camel.JabberProcessor" />
-		
-	<beans:bean id="ChatHandlerBean"
-		class="com.bencompany.jabbercamel.camel.ChatHandler" />	
+	
+	<!-- MODULES -->
+	<beans:bean id="RssHandlerBean"
+		class="com.bencompany.jabbercamel.modules.RssHandler" />	
+	<beans:bean id="LinkHandlerBean"
+		class="com.bencompany.jabbercamel.modules.LinkHandler" />	
+	<!-- DEPENDENCIES -->
+
 	<beans:bean id="objectMapper" 
 		class="com.fasterxml.jackson.databind.ObjectMapper" />
-
+		
+		
 	<!-- Camel Context - CHANGE PROPERTIES LOCATION FOR BUILDS -->
 	<beans:bean id="properties"
 		class="org.apache.camel.component.properties.PropertiesComponent">
